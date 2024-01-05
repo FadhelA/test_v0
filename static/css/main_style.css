@@ -1,0 +1,92 @@
+/* static/css/main_style.css */
+
+body {
+    background-color: #e9ecef; /* Gentle light background */
+    font-family: 'Nunito Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #212529;
+    margin: 0;
+    padding-top: 80px;
+    padding-bottom: 2rem;
+}
+
+.container {
+    max-width: 700px; /* keeping the content centered and not too wide */
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800; /* Extra bold */
+    color: #212529;
+    margin-bottom: 4rem; /* More space under the title */
+    text-transform: uppercase; /* Uppercase for a design touch */
+    letter-spacing: 1.5px; /* Space out the letters for a stylistic effect */
+}
+
+.card {
+    margin-bottom: 2rem; /* space between cards */
+    border-radius: 10px; /* slightly rounded corners for a soft look */
+    border: 0; /* no border */
+    background-color: #fff;
+}
+
+.card-header {
+    font-size: 1.25rem;
+    font-weight: 700; /* Bold */
+    background: #ffffff;
+    border-bottom: 3px solid #007bff; /* Colored bar at the bottom of the card-header */
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.card-title {
+    margin-bottom: 1.5rem; /* space after the card-title */
+    color: #007bff; /* same color as the stripe for consistency */
+    text-transform: capitalize; /* Capitalize each word for the title */
+}
+
+.card-text {
+    font-size: 1rem;
+    line-height: 1.7; /* Space out the lines a little more for readability */
+}
+
+/* Let's also add a subtle shadow to the cards */
+.card {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1);
+}
+
+.fa-ul > li {
+    margin-top: 10px;
+}
+
+.fa-li {
+    left: 2em;
+}
+
+/* Navbar */
+.navbar {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.nav-link {
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #007bff;
+}
+
+.card-custom-content {
+    max-height: 400px;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.5s ease;
+}

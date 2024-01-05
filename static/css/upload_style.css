@@ -1,0 +1,49 @@
+/* static/css/upload_style.css */
+
+.upload-container {
+    max-width: 600px;
+    background: #ffffff;
+    padding: 30px;
+    margin: 50px auto;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+  .file-upload-wrapper {
+    border: 2px dashed #ddd;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    color: #cccccc;
+    margin-bottom: 15px;
+    position: relative;
+    border-radius: 5px;
+  }
+  .file-upload-wrapper:hover {
+    border-color: #a1a1a1;
+  }
+  .file-upload-wrapper:after {
+    content: "or click here to select files";
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    font-size: 14px;
+    color: #999;
+  }
+  .file-upload-input {
+    opacity: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    cursor: pointer;
+  }
+  #file-drag span.dragndrop {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  #file-drag strong {
+    color: #333;
+    font-weight: 600;
+  }

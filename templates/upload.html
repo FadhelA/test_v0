@@ -1,0 +1,146 @@
+<!-- templates/upload.html -->
+{% extends 'base.html' %}
+
+{% block title %}
+  Uploader de fichier
+{% endblock %}
+
+{% block content %}
+  <div class="header text-center">
+    <h1>Uploader un cours</h1>
+  </div>
+  <div class="container upload-container">
+    <!-- <h2 class="text-center mb-4">Choisir un fichier</h2> -->
+    <form id="file-upload-form" class="uploader" action="/process_file" method="post" enctype="multipart/form-data">
+      <!-- Drag and Drop Area -->
+      <div id="file-drag" class="form-group file-upload-wrapper" ondrop="fileSelected(event)">
+        <input type="file" id="file-upload-input" class="file-upload-input" name="file" onchange="fileTypeCheck()" multiple />
+        <span id="drag-text" class="dragndrop"><strong>Drag and drop</strong></span>
+        <div id="file-icon" class="text-center" style="display: none;">
+          <i class="bi bi-file-earmark-text" style="font-size: 48px;"></i>
+          <p id="file-name-display" class="text-muted"></p>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block mt-2">Valider</button>
+    </form>
+  </div>
+  <!-- Include the progress bar in the form -->
+  <div class="progress">
+    <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">0%</div>
+  </div>
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    function fileTypeCheck() {
+      var fileInput = document.getElementById('file-upload-input')
+      var dragText = document.getElementById('drag-text')
+      var fileIcon = document.getElementById('file-icon')
+      var fileNameDisplay = document.getElementById('file-name-display')
+      var file = fileInput.files[0]
+      var allowedExtensions = /(\.pdf|\.docx)$/i
+      var maxSize = 20 * 1024 * 1024 // 20 MB in bytes
+    
+      // If no file is selected or the input is cleared, reset the display
+      if (!file) {
+        dragText.style.display = 'block'
+        fileIcon.style.display = 'none'
+        fileNameDisplay.innerHTML = ''
+        return
+      }
+    
+      if (file.size > maxSize) {
+        alert('Le fichier est trop volumineux. Taille maximale de 20MB.')
+        fileInput.value = '' // Clear the input.
+        return
+      }
+    
+      if (!allowedExtensions.exec(file.name)) {
+        alert('Format non valide. Pour le moment seuls les formats PDF et DOCX sont acceptes.')
+        fileInput.value = '' // Clear the input.
+        return
+      }
+    
+      // Hide the drag text and show the file icon with the file name
+      dragText.style.display = 'none'
+      fileIcon.style.display = 'block'
+      fileNameDisplay.innerHTML = file.name // Display the file name
+    }
+    
+    function fileSelected(event) {
+      event.stopPropagation()
+      event.preventDefault()
+      var fileInput = document.getElementById('file-upload-input')
+      fileInput.files = event.dataTransfer.files
+      fileTypeCheck() // Call the function to check the file and update the display
+    }
+    
+    // Add event listeners to handle drag and drop functionality
+    var dropArea = document.getElementById('file-drag')
+    ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
+      dropArea.addEventListener(eventName, preventDefaults, false)
+    })
+    
+    function preventDefaults(e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    
+    ;['dragenter', 'dragover'].forEach((eventName) => {
+      dropArea.addEventListener(eventName, highlight, false)
+    })
+    ;['dragleave', 'drop'].forEach((eventName) => {
+      dropArea.addEventListener(eventName, unhighlight, false)
+    })
+    
+    function highlight(e) {
+      dropArea.classList.add('highlight')
+    }
+    
+    function unhighlight(e) {
+      dropArea.classList.remove('highlight')
+    }
+  </script>
+
+  <script>
+    jQuery(document).ready(function ($) {
+      // You can still use $ inside this function because jQuery passes itself as the first parameter
+      var socket = io.connect('http://' + document.domain + ':' + location.port)
+    
+      $('#file-upload-form').submit(function (e) {
+        e.preventDefault()
+        var formData = new FormData(this) // 'this' refers to the form
+        formData.append('sid', socket.id) // Append session ID for SocketIO
+    
+        // Disable the input and the button
+        $('#file-upload-input').prop('disabled', true)
+        $('button[type="submit"]').prop('disabled', true)
+        $('#progress-bar').css('width', '0%') // Reset progress bar
+    
+        jQuery.ajax({
+          url: '/process_file',
+          type: 'POST',
+          data: formData,
+          contentType: false,
+          processData: false,
+          cache: false,
+          success: function (response) {
+            console.log(response.message)
+          },
+          error: function (error) {
+            console.log(error)
+          }
+        })
+      })
+    
+      // Listen for 'processing_update' events
+      socket.on('processing_update', function (data) {
+        var progressBar = document.getElementById('progress-bar')
+        var progressValue = data.progress + '%'
+        progressBar.style.width = progressValue // Update the progress bar width
+        progressBar.setAttribute('aria-valuenow', data.progress) // Update for accessibility
+        progressBar.textContent = progressValue // Update the text content inside the progress bar
+      })
+    })
+  </script>
+{% endblock %}

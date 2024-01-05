@@ -1,0 +1,28 @@
+<!-- templates/index_new.html -->
+{% extends 'base.html' %}
+
+{% block title %}
+  Sélectionner un cours
+{% endblock %}
+
+{% block content %}
+  <div class="header text-center">
+    <h1>Sélectionnez un cours</h1>
+  </div>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-11 mx-auto">
+        <div class="list-group">
+          {% for fichier in available_cours %}
+            <a href="{{  url_for('fiche', filename = fichier) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+              {{ fichier }}
+              <span class="badge bg-success text-white rounded-pill">Voir</span>
+            </a>
+          {% else %}
+            <p class="text-center">Aucun fichier trouve.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

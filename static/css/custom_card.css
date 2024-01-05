@@ -1,0 +1,35 @@
+.my-custom-card {
+    overflow: hidden;
+    position: relative;
+    max-height: 400px;
+}
+
+.my-custom-card .card-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px; /* Adjust the height for your gradient effect */
+    background: linear-gradient(to bottom, transparent, white);
+    pointer-events: none; /* Allow clicking on the content below */
+}
+
+.my-custom-card .card-toggle {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px; /* pill shape */
+    border-width: 2px;
+    padding: 1px 12px;
+    display: none; /* Initially hide the button */
+}
+
+/* Additional styling for the button when the card is expanded */
+.my-custom-card.expanded .card-toggle {
+    transform: rotate(180deg) translateX(50%); /* Flip the arrow and center */
+}
+
+.my-custom-card.expanded .card-fade {
+    display: none; /* Hide the fade when expanded */
+}
